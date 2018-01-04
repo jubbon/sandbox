@@ -44,7 +44,8 @@ async def insert(**kwargs):
     )
     async with create_engine(**DB) as engine:
         async with engine.acquire() as conn:
-            await conn.execute(users.insert().values(**kwargs))
+            uid = await conn.scalar(users.insert().values(**kwargs))
+            print('Id: {}'.format(uid))
 
 def main():
     '''
