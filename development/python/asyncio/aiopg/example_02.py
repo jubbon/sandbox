@@ -48,6 +48,19 @@ async def count(conn):
     print('Total users: {}, total emails: {}'.format(users_count, emails_count))
 
 
+async def dump(conn):
+    '''
+    Dump row form tables
+    '''
+    print('Users:')
+    async for row in conn.execute(users.select()):
+        print("{}: {}".format(row.name, row.birthday))
+
+    print('Emails:')
+    async for row in conn.execute(emails.select()):
+        print("{}: {}".format(row.user_id, row.email))
+
+
 async def go():
     '''
     '''
@@ -62,6 +75,7 @@ async def go():
         async with engine.acquire() as conn:
             await create_tables(conn)
             await count(conn)
+            await dump(conn)
 
 def main():
     '''
